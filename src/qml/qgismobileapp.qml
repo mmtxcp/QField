@@ -670,9 +670,9 @@ ApplicationWindow {
       id: openProjectMenuItem
       property ProjectSource __projectSource
 
-      width: Math.max(200*dp, mainWindow.width/4)
-      height: 48 * dp
       font.pointSize: 14
+      width: parent.width
+      height: 48 * dp
 
       text: qsTr( "Open Project" )
       onTriggered: {
@@ -681,14 +681,14 @@ ApplicationWindow {
       }
     }
 
-    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
+    MenuSeparator { width: parent.width }
 
     MenuItem {
       text: qsTr( "Settings" )
 
-      width: Math.max(200*dp, mainWindow.width/4)
-      height: 48 * dp
       font.pointSize: 14
+      width: parent.width
+      height: 48 * dp
 
       onTriggered: {
         qfieldSettings.visible = true
@@ -700,7 +700,7 @@ ApplicationWindow {
       text: qsTr( "About" )
 
       font.pointSize: 14
-      width: Math.max(200*dp, mainWindow.width/4)
+      width: parent.width
       height: 48 * dp
 
       onTriggered: {
@@ -711,9 +711,9 @@ ApplicationWindow {
 
     MenuItem {
       text: qsTr( "Log" )
-      font.pointSize: 14
 
-      width: Math.max(200*dp, mainWindow.width/4)
+      font.pointSize: 14
+      width: parent.width
       height: 48 * dp
 
       onTriggered: {
@@ -722,13 +722,13 @@ ApplicationWindow {
       }
     }
 
-    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
+    MenuSeparator { width: parent.width }
 
     MenuItem {
       text: qsTr( 'Measure Tool' )
 
       font.pointSize: 14
-      width: Math.max(200*dp, mainWindow.width/4)
+      width: parent.width
       height: 48 * dp
 
       onTriggered: {
@@ -742,7 +742,7 @@ ApplicationWindow {
       text: qsTr( "Print to PDF" )
 
       font.pointSize: 14
-      width: Math.max(200*dp, mainWindow.width/4)
+      width: parent.width
       height: 48 * dp
 
       onTriggered: {
@@ -797,7 +797,7 @@ ApplicationWindow {
       MenuItem {
         text: Title
 
-        width: Math.max(200*dp, mainWindow.width/4)
+        width: parent.width
         height: 48 * dp
         font.pointSize: 14
 
@@ -832,7 +832,7 @@ ApplicationWindow {
 
       height: 48 * dp
       font.pointSize: 14
-      width: Math.max(200*dp, mainWindow.width/4)
+      width: parent.width
       checkable: true
       checked: positionSource.active
       indicator.height: 20 * dp
