@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 import QtQuick 2.11
-import QtQuick.Controls 2.4 as Controls
 import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
@@ -661,13 +660,13 @@ ApplicationWindow {
   }
 
 
-  Controls.Menu {
+  Menu {
     id: mainMenu
     title: qsTr( "Main Menu" )
 
     width: Math.max(200*dp, mainWindow.width/4)
 
-    Controls.MenuItem {
+    MenuItem {
       id: openProjectMenuItem
       property ProjectSource __projectSource
 
@@ -678,10 +677,13 @@ ApplicationWindow {
       text: qsTr( "Open Project" )
       onTriggered: {
         __projectSource = platformUtilities.openProject()
+        highlighted = false
       }
     }
 
-    Controls.MenuItem {
+    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
+
+    MenuItem {
       text: qsTr( "Settings" )
 
       width: Math.max(200*dp, mainWindow.width/4)
@@ -690,10 +692,11 @@ ApplicationWindow {
 
       onTriggered: {
         qfieldSettings.visible = true
+        highlighted = false
       }
     }
 
-    Controls.MenuItem {
+    MenuItem {
       text: qsTr( "About" )
 
       font.pointSize: 14
@@ -702,10 +705,11 @@ ApplicationWindow {
 
       onTriggered: {
         aboutDialog.visible = true
+        highlighted = false
       }
     }
 
-    Controls.MenuItem {
+    MenuItem {
       text: qsTr( "Log" )
       font.pointSize: 14
 
@@ -714,11 +718,13 @@ ApplicationWindow {
 
       onTriggered: {
         messageLog.visible = true
+        highlighted = false
       }
     }
 
+    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
 
-    Controls.MenuItem {
+    MenuItem {
       text: qsTr( 'Measure Tool' )
 
       font.pointSize: 14
@@ -727,10 +733,11 @@ ApplicationWindow {
 
       onTriggered: {
         changeMode( 'measure' )
+        highlighted = false
       }
     }
 
-    Controls.MenuItem {
+    MenuItem {
       id: printItem
       text: qsTr( "Print to PDF" )
 
@@ -738,28 +745,18 @@ ApplicationWindow {
       width: Math.max(200*dp, mainWindow.width/4)
       height: 48 * dp
 
-      Instantiator {
-
-        id: printLayoutListInstantiator
-
-        model: PrintLayoutListModel {
-        }
-      }
-
       onTriggered: {
-        printMenu.popup( printItem.x+printItem.width, printItem.y)
+        printMenu.popup( printItem.x+printItem.width, 2 * dp )
+        highlighted = false
       }
+    }
 
-      Connections {
-        target: iface
+    Connections {
+        target: printMenu
 
-        onLoadProjectEnded: {
-          printLayoutListInstantiator.model.project = qgisProject
-          printLayoutListInstantiator.model.reloadModel()
-          //printItem.visible = printLayoutListInstantiator.model.rowCount()>0
-          //printItem.height = printLayoutListInstantiator.model.rowCount() ? 48 * dp : 0
+        onEnablePrintItem: {
+          printItem.enabled = rows
         }
-      }
     }
 
     /*
@@ -780,8 +777,12 @@ ApplicationWindow {
     */
   }
 
-  Controls.Menu {
+  Menu {
     id: printMenu
+
+    title: qsTr( "Print to PDF" )
+
+    signal enablePrintItem( int rows )
 
     width: Math.max(200*dp, mainWindow.width/4)
     font.pointSize: 14
@@ -793,7 +794,7 @@ ApplicationWindow {
       model: PrintLayoutListModel {
       }
 
-      Controls.MenuItem {
+      MenuItem {
         text: Title
 
         width: Math.max(200*dp, mainWindow.width/4)
@@ -802,6 +803,7 @@ ApplicationWindow {
 
         onTriggered: {
           iface.print( Index )
+          highlighted = false
         }
       }
       onObjectAdded: printMenu.insertItem(index, object)
@@ -814,18 +816,30 @@ ApplicationWindow {
       onLoadProjectEnded: {
         layoutListInstantiator.model.project = qgisProject
         layoutListInstantiator.model.reloadModel()
+        printMenu.enablePrintItem(layoutListInstantiator.model.rowCount())
       }
     }
   }
 
-  Controls.Menu {
+  Menu {
     id: gpsMenu
     title: qsTr( "Positioning Options" )
+    font.pointSize: 14
+    width: Math.max(200*dp, mainWindow.width/4)
 
-    Controls.MenuItem {
+    MenuItem {
       text: qsTr( "Enable Positioning" )
+
+      height: 48 * dp
+      font.pointSize: 14
+      width: Math.max(200*dp, mainWindow.width/4)
       checkable: true
       checked: positionSource.active
+      indicator.height: 20 * dp
+      indicator.width: 20 * dp
+      indicator.implicitHeight: 24 * dp
+      indicator.implicitWidth: 24 * dp
+
       onCheckedChanged: {
         if ( checked && platformUtilities.checkPositioningPermissions() ) {
           positionSource.active = checked
@@ -838,8 +852,14 @@ ApplicationWindow {
       }
     }
 
-    Controls.MenuItem {
+    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
+
+    MenuItem {
       text: qsTr( "Center current location" )
+
+      height: 48 * dp
+      font.pointSize: 14
+      width: Math.max(200*dp, mainWindow.width/4)
       onTriggered: {
         var coord = positionSource.position.coordinate;
         var loc = Qt.point( coord.longitude, coord.latitude );
@@ -847,12 +867,21 @@ ApplicationWindow {
       }
     }
 
-    Controls.MenuSeparator {}
+    MenuSeparator { width: Math.max(200*dp, mainWindow.width/4) }
 
-    Controls.MenuItem {
+    MenuItem {
       text: qsTr( "Show position information" )
+
+      height: 48 * dp
+      font.pointSize: 14
+      width: Math.max(200*dp, mainWindow.width/4)
       checkable: true
       checked: settings.valueBool( "/QField/Positioning/ShowInformationView", false )
+
+      indicator.height: 20 * dp
+      indicator.width: 20 * dp
+      indicator.implicitHeight: 24 * dp
+      indicator.implicitWidth: 24 * dp
       onCheckedChanged:
       {
         settings.setValue( "/QField/Positioning/ShowInformationView", checked )
@@ -961,7 +990,7 @@ ApplicationWindow {
     opacity: 0.5
     visible: false
 
-    Controls.BusyIndicator {
+    BusyIndicator {
       id: busyMessageIndicator
       anchors.centerIn: parent
       running: true
@@ -991,7 +1020,7 @@ ApplicationWindow {
     }
   }
 
-  Controls.BusyIndicator {
+  BusyIndicator {
     id: busyIndicator
     anchors.centerIn: mapCanvas
     width: 36 * dp
