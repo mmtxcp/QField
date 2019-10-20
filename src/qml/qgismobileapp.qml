@@ -133,7 +133,6 @@ ApplicationWindow {
 
     PositionInformationView {
       positionSource: positionSource
-      crs: mapCanvas.mapSettings.destinationCrs
       antennaHeight: positioningSettings.antennaHeightActivated ? positioningSettings.antennaHeight : NaN
     }
   }
