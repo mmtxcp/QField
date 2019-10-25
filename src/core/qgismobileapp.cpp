@@ -88,6 +88,7 @@
 #include "valuemapmodel.h"
 #include "referencingfeaturelistmodel.h"
 #include "featurechecklistmodel.h"
+#include "geometryeditorsmodel.h"
 
 // Check QGIS Version
 #if VERSION_INT >= 30600
@@ -217,6 +218,9 @@ void QgisMobileapp::initDeclarative()
   qmlRegisterType<ValueMapModel>( "org.qfield", 1, 0, "ValueMapModel" );
   qmlRegisterType<ReferencingFeatureListModel>( "org.qgis", 1, 0, "ReferencingFeatureListModel" );
   qmlRegisterType<FeatureCheckListModel>( "org.qgis", 1, 0, "FeatureCheckListModel" );
+  qmlRegisterType<GeometryEditorsModel>( "org.qfield", 1, 0, "GeometryEditorsModel" );
+  qmlRegisterSingletonType<GeometryEditorsModel>( "org.qfield", 1, 0, "GeometryEditorsModelSingleton", geometryEditorsSingletonProvider );
+
 
   qmlRegisterUncreatableType<AppInterface>( "org.qgis", 1, 0, "QgisInterface", "QgisInterface is only provided by the environment and cannot be created ad-hoc" );
   qmlRegisterUncreatableType<Settings>( "org.qgis", 1, 0, "Settings", "" );
@@ -270,7 +274,7 @@ void QgisMobileapp::loadProjectQuirks()
 
 void QgisMobileapp::onReadProject( const QDomDocument &doc )
 {
-  Q_UNUSED( doc );
+  Q_UNUSED( doc )
   QMap<QgsVectorLayer *, QgsFeatureRequest> requests;
   QSettings().setValue( "/qgis/project/lastProjectFile", mProject->fileName() );
   const QList<QgsMapLayer *> mapLayers { mProject->mapLayers().values() };
