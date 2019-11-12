@@ -23,7 +23,7 @@ import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client import client
 
-TRACK = 'beta'  # Can be 'alpha', beta', 'production' or 'rollout'
+TRACK = 'alpha'  # Can be 'alpha', beta', 'production' or 'rollout'
 SERVICE_ACCOUNT_EMAIL = (
     'qfielddeployer@api-5606400287044015100-167791.iam.gserviceaccount.com')
 
@@ -81,11 +81,12 @@ def main():
             editId=edit_id,
             track=TRACK,
             packageName=package_name,
-            body={u'versionCodes': version_codes}).execute()
+            body={'track': TRACK,
+                'releases': [ {'versionCodes': version_codes, 'status' : 'completed' } ] }).execute()
 
-        print('Track {track} is set for version code(s) {version_code}'.format(
+        print('Track {track} is set for releases {releases}'.format(
             track=track_response['track'],
-            version_code=track_response['versionCodes']
+            releases=track_response['releases']
         ))
 
         commit_request = service.edits().commit(

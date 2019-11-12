@@ -11,8 +11,6 @@
 
 set -e
 
-apt update && apt install zip
-
 SOURCE_DIR=/usr/src/qfield
 if [[ -z ${BUILD_FOLDER+x} ]]; then
     BUILD_DIR=${SOURCE_DIR}/build-docker
@@ -22,17 +20,19 @@ fi
 if [[ -z ${ARCH+x} ]]; then
     ARCH=armv7
 fi
-if [[ -z ${APP_NAME} ]]; then
+if [[ -z ${APP_NAME+x} ]]; then
   APP_NAME="QField"
 fi
-if [[ -z ${PKG_NAME} ]]; then
+if [[ -z ${PKG_NAME+x} ]]; then
   PKG_NAME="qfield"
 fi
 
 INSTALL_DIR=${BUILD_DIR}/out
 QT_ANDROID=${QT_ANDROID_BASE}/android_${ARCH}
 
-if [[ -z ${APP_ICON} ]]; then
+echo "Package name ${PKG_NAME}"
+
+if [[ -z ${APP_ICON+x} ]]; then
   sed -i "s|<file alias=\"qfield-logo.svg\">icons/qfield-logo.svg</file>|<file alias=\"qfield-logo.svg\">icons/${APP_ICON}</file>|" ${SOURCE_DIR}/images/images.qrc
 fi
 if [[ "X${PKG_NAME}" != "Xqfield" ]]; then
