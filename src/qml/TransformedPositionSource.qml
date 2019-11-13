@@ -8,6 +8,7 @@ PositionSource {
   property alias destinationCrs: _ct.destinationCrs
   property alias projectedPosition: _ct.projectedPosition
   property alias deltaZ: _ct.deltaZ
+  property alias skipAltitudeTransformation: _ct.skipAltitudeTransformation
 
   property CoordinateTransformer ct: CoordinateTransformer {
     id: _ct
