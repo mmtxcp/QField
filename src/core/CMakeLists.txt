@@ -14,6 +14,7 @@ SET(QFIELD_CORE_SRCS
   featureslocatorfilter.cpp
   focusstack.cpp
   geometry.cpp
+  geometryeditorsmodel.cpp
   identifytool.cpp
   layertreemapcanvasbridge.cpp
   layertreemodel.cpp
@@ -61,6 +62,7 @@ SET(QFIELD_CORE_HDRS
   featureslocatorfilter.h
   focusstack.h
   geometry.h
+  geometryeditorsmodel.h
   identifytool.h
   layertreemapcanvasbridge.h
   layertreemodel.h
